@@ -1,3 +1,5 @@
+"use client";
+
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Drawer,
@@ -13,6 +15,8 @@ import { Button } from "./ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Trash2 } from "lucide-react";
 import emergencyContactsData from "@/public/emergency-contacts.json";
+import { useState } from "react";
+import AddMemberDrawer from "./addMemberDrawer";
 
 export default function ContactDrawer() {
   const contacts = emergencyContactsData.contacts;
@@ -80,7 +84,7 @@ export default function ContactDrawer() {
         </div>
 
         <DrawerFooter>
-          <Button>新增成員</Button>
+          <AddMemberDrawer />
           <DrawerClose asChild>
             <Button variant="outline">關閉</Button>
           </DrawerClose>
