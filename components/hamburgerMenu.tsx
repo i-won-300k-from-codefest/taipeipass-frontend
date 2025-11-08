@@ -39,7 +39,7 @@ function UserDrawer({
         <Button
           variant="outline"
           size="icon"
-          className="fixed top-4 right-4 z-10"
+          className="fixed top-4 right-4 z-50"
         >
           <Menu />
           <span className="sr-only">開啟選單</span>
