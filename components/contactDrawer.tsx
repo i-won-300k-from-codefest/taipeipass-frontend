@@ -13,10 +13,16 @@ import {
 } from "@/components/ui/drawer";
 import { Button } from "./ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Trash2 } from "lucide-react";
+import { Trash2, MoreVertical } from "lucide-react";
 import emergencyContactsData from "@/public/emergency-contacts.json";
 import { useState } from "react";
 import AddMemberDrawer from "./addMemberDrawer";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export default function ContactDrawer() {
   const contacts = emergencyContactsData.contacts;
@@ -69,13 +75,23 @@ export default function ContactDrawer() {
                     </p>
                   </div>
                 </div>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="text-destructive hover:text-destructive h-8 w-8 cursor-pointer"
-                >
-                  <Trash2 className="h-4 w-4" />
-                </Button>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8 cursor-pointer"
+                    >
+                      <MoreVertical className="h-4 w-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuItem className="text-destructive focus:text-destructive cursor-pointer">
+                      <Trash2 className="h-4 w-4 mr-2 text-destructive" />
+                      刪除
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </CardContent>
             </Card>
           ))}
