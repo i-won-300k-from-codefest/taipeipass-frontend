@@ -62,6 +62,8 @@ jobs:
 
             - name: Build with Next.js
               run: bun run build
+              env:
+                  NEXT_PUBLIC_MAPBOX_TOKEN: ${{ vars.NEXT_PUBLIC_MAPBOX_TOKEN }}
 
             - name: Upload artifact
               uses: actions/upload-pages-artifact@v3
