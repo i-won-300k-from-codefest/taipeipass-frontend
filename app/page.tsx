@@ -16,21 +16,23 @@ import { ShelterSelectionDialog } from '@/components/ShelterSelectionDialog';
 const mockNews: NewsItem[] = [
     {
         id: 1,
-        title: '颱風警報：康芮颱風逼近台北市',
-        category: '緊急警報',
-        content: '預計今晚8點發布陸上颱風警報，請民眾做好防颱準備。',
-        timestamp: new Date().toISOString(),
+        title: '台北市發布地震警報',
+        category: '緊急通知',
+        content:
+            '今日上午10:21發生規模6.2地震，震央位於台北市南方15公里處，震源深度10公里。請民眾保持警戒，注意餘震。',
+        timestamp: '2024-01-15T10:25:00',
         priority: 'high',
         source: '中央氣象署'
     },
     {
         id: 2,
-        title: '捷運系統正常營運',
+        title: '捷運系統暫停營運檢查',
         category: '交通資訊',
-        content: '台北捷運各線路運行正常，請安心搭乘。',
-        timestamp: new Date(Date.now() - 3600000).toISOString(),
-        priority: 'low',
-        source: '台北捷運'
+        content:
+            '受地震影響，台北捷運全線暫停營運進行安全檢查，預計30分鐘內恢復正常。請搭乘捷運的民眾耐心等候。',
+        timestamp: '2024-01-15T10:30:00',
+        priority: 'medium',
+        source: '台北捷運公司'
     }
 ];
 
