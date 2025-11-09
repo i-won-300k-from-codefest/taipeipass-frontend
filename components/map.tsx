@@ -592,18 +592,157 @@ export const ShelterMap = forwardRef<ShelterMapRef>((props, ref) => {
         }
     }, [familyData.commonShelter, mapLoaded]);
 
-    // Update family members when they change - NO RE-RENDER
+    // Re-render family members when they change
     useEffect(() => {
         if (!map.current || !mapLoaded) return;
 
-        const updateContacts = async () => {
-            // This is a simplified version - you might want to implement the full loadContactsLayer logic here
-            // For now, we'll just log that members changed
-            console.log('Family members updated:', familyData.members);
-            // TODO: Implement proper contact layer update without full reload
+        // This function is self-contained and can be called to refresh the contacts layer
+        const loadContactsLayer = async (members: typeof familyData.members) => {
+            if (!map.current) return;
+
+            // Inefficient but necessary for now: re-fetch shelter data to check member status.
+            // A better implementation would be to store shelter data in a ref or state.
+            const [newTaipeiResponse, taipeiResponse] = await Promise.all([
+                fetch('/json/新北市.json'),
+                fetch('/json/臺北市.json')
+            ]);
+            const newTaipeiData = await newTaipeiResponse.json();
+            const taipeiData = await taipeiResponse.json();
+            const shelterData = {
+                type: 'FeatureCollection' as const,
+                features: [...newTaipeiData.features, ...taipeiData.features]
+            };
+
+            const findShelterAtLocation = (coords: [number, number]) => {
+                const [lng, lat] = coords;
+                return shelterData.features.find((feature: ShelterFeature) => {
+                    const [shelterLng, shelterLat] = feature.geometry.coordinates;
+                    const distance = Math.sqrt(
+                        Math.pow(shelterLng - lng, 2) + Math.pow(shelterLat - lat, 2)
+                    );
+                    return distance < 0.0001; // approximately 10 meters
+                });
+            };
+
+            // Remove existing contacts layer if it exists to prevent duplicates
+            if (map.current.getLayer('emergency-contacts')) {
+                map.current.removeLayer('emergency-contacts');
+            }
+            if (map.current.getSource('emergency-contacts')) {
+                map.current.removeSource('emergency-contacts');
+            }
+
+            // Remove existing avatar images to prevent memory leaks with old avatars
+            members.forEach((contact) => {
+                if (map.current?.hasImage(`avatar-${contact.id}`)) {
+                    map.current.removeImage(`avatar-${contact.id}`);
+                }
+            });
+
+            // Load avatar images for all current emergency contacts
+            const avatarPromises = members.map((contact) => {
+                return new Promise<void>((resolve, reject) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        const shelter = findShelterAtLocation(contact.coordinates);
+                        const isAtShelter = !!shelter;
+                        const size = 128;
+                        const borderWidth = 6;
+                        const canvas = document.createElement('canvas');
+                        canvas.width = size;
+                        canvas.height = size;
+                        const ctx = canvas.getContext('2d');
+
+                        if (ctx && map.current) {
+                            ctx.clearRect(0, 0, size, size);
+                            ctx.beginPath();
+                            ctx.arc(size / 2, size / 2, size / 2, 0, Math.PI * 2);
+                            ctx.fillStyle = isAtShelter ? '#5ab4c5' : '#ef4444';
+                            ctx.fill();
+                            ctx.beginPath();
+                            ctx.arc(size / 2, size / 2, size / 2 - borderWidth, 0, Math.PI * 2);
+                            ctx.fillStyle = '#ffffff';
+                            ctx.fill();
+                            ctx.beginPath();
+                            ctx.arc(size / 2, size / 2, size / 2 - borderWidth, 0, Math.PI * 2);
+                            ctx.clip();
+                            const scale = Math.max(size / img.width, size / img.height);
+                            const scaledWidth = img.width * scale;
+                            const scaledHeight = img.height * scale;
+                            const x = (size - scaledWidth) / 2;
+                            const y = (size - scaledHeight) / 2;
+                            ctx.drawImage(img, x, y, scaledWidth, scaledHeight);
+                            canvas.toBlob((blob) => {
+                                if (blob) {
+                                    createImageBitmap(blob).then((imageBitmap) => {
+                                        if (map.current) {
+                                            map.current.addImage(`avatar-${contact.id}`, imageBitmap, { sdf: false });
+                                        }
+                                        resolve();
+                                    });
+                                } else {
+                                    resolve();
+                                }
+                            });
+                        } else {
+                            resolve();
+                        }
+                    };
+                    img.onerror = () => {
+                        console.error(`Error loading avatar ${contact.avatar}`);
+                        resolve(); // Resolve anyway to not block other avatars
+                    };
+                    img.src = contact.avatar;
+                });
+            });
+
+            await Promise.all(avatarPromises);
+
+            const contactsGeoJSON = {
+                type: 'FeatureCollection' as const,
+                features: members.map((contact) => {
+                    const shelter = findShelterAtLocation(contact.coordinates);
+                    const isAtShelter = !!shelter;
+                    return {
+                        type: 'Feature' as const,
+                        properties: {
+                            id: contact.id,
+                            name: contact.name,
+                            phone: contact.phone,
+                            relation: contact.relation,
+                            status: isAtShelter ? 'at_shelter' : 'outside',
+                            shelterName: shelter?.properties.類別 || null,
+                            shelterAddress: shelter?.properties.地址 || null
+                        },
+                        geometry: {
+                            type: 'Point' as const,
+                            coordinates: contact.coordinates
+                        }
+                    };
+                })
+            };
+
+            if (map.current) {
+                map.current.addSource('emergency-contacts', {
+                    type: 'geojson',
+                    data: contactsGeoJSON
+                });
+
+                map.current.addLayer({
+                    id: 'emergency-contacts',
+                    type: 'symbol',
+                    source: 'emergency-contacts',
+                    layout: {
+                        'icon-image': ['concat', 'avatar-', ['get', 'id']],
+                        'icon-size': 0.5,
+                        'icon-allow-overlap': true,
+                        'icon-anchor': 'center'
+                    }
+                });
+            }
         };
 
-        updateContacts();
+        loadContactsLayer(familyData.members);
     }, [familyData.members, mapLoaded]);
 
     return (
