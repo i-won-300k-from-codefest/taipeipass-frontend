@@ -77,15 +77,14 @@ function HomeContent() {
       />
 
       {/* Navigate to Common Shelter Button */}
-      <div className="absolute bottom-28 right-8 z-10">
+      <div className="absolute bottom-24 right-8 z-10">
         <Button
           size="icon"
+          variant="outline"
           onClick={handleNavigateToShelter}
-          className="h-12 w-12 rounded-full shadow-lg cursor-pointer"
-          title={
-            familyData.commonShelter
-              ? "前往集合避難所"
-              : "設定家庭集合避難所"
+          className="h-12 w-12 shadow-lg"
+          aria-label={
+            familyData.commonShelter ? "前往集合避難所" : "設定家庭集合避難所"
           }
         >
           <Navigation className="h-5 w-5" />
