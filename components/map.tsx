@@ -12,7 +12,10 @@ interface ShelterFeature {
     地址: string;
     經度: string;
     緯度: string;
-    [key: string]: any;
+    村里別?: string;
+    可容納人數?: string;
+    "地下樓 層數"?: string;
+    派出所?: string;
   };
   geometry: {
     type: string;
@@ -212,7 +215,7 @@ export const ShelterMap = forwardRef<ShelterMapRef>((props, ref) => {
               return;
 
             map.current.easeTo({
-              center: (features[0].geometry as any).coordinates,
+              center: (features[0].geometry as { coordinates: [number, number] }).coordinates,
               zoom: zoom,
             });
           });
@@ -223,7 +226,7 @@ export const ShelterMap = forwardRef<ShelterMapRef>((props, ref) => {
           if (!map.current || !e.features || e.features.length === 0) return;
 
           const coordinates = (
-            e.features[0].geometry as any
+            e.features[0].geometry as { coordinates: [number, number] }
           ).coordinates.slice();
           const properties = e.features[0].properties;
 
@@ -379,24 +382,18 @@ export const ShelterMap = forwardRef<ShelterMapRef>((props, ref) => {
                   // Convert canvas to image data
                   canvas.toBlob((blob) => {
                     if (blob) {
-                      const reader = new FileReader();
-                      reader.onload = () => {
-                        const arrayBuffer = reader.result as ArrayBuffer;
-                        const uint8Array = new Uint8Array(arrayBuffer);
-                        createImageBitmap(blob).then((imageBitmap) => {
-                          if (map.current) {
-                            map.current.addImage(
-                              `avatar-${contact.id}`,
-                              imageBitmap,
-                              {
-                                sdf: false,
-                              },
-                            );
-                          }
-                          resolve();
-                        });
-                      };
-                      reader.readAsArrayBuffer(blob);
+                      createImageBitmap(blob).then((imageBitmap) => {
+                        if (map.current) {
+                          map.current.addImage(
+                            `avatar-${contact.id}`,
+                            imageBitmap,
+                            {
+                              sdf: false,
+                            },
+                          );
+                        }
+                        resolve();
+                      });
                     } else {
                       resolve();
                     }
@@ -443,7 +440,7 @@ export const ShelterMap = forwardRef<ShelterMapRef>((props, ref) => {
 
           map.current.addSource("emergency-contacts", {
             type: "geojson",
-            data: contactsGeoJSON as any,
+            data: contactsGeoJSON,
           });
 
           // Add emergency contacts layer with avatar icons
@@ -464,7 +461,7 @@ export const ShelterMap = forwardRef<ShelterMapRef>((props, ref) => {
             if (!map.current || !e.features || e.features.length === 0) return;
 
             const coordinates = (
-              e.features[0].geometry as any
+              e.features[0].geometry as { coordinates: [number, number] }
             ).coordinates.slice();
             const properties = e.features[0].properties;
 
@@ -543,8 +540,10 @@ export const ShelterMap = forwardRef<ShelterMapRef>((props, ref) => {
         setIsLoading(false);
       }
     });
+  }, [familyData]);
 
-    // Cleanup
+  // Cleanup
+  useEffect(() => {
     return () => {
       if (map.current) {
         map.current.remove();

@@ -55,56 +55,50 @@ export function StatusReportDialog({
   emergencyContacts: EmergencyContact[];
   currentUser: UserData | null;
 }) {
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [messages, setMessages] = useState<ChatMessage[]>(() => [
+    {
+      id: 1,
+      senderId: 1,
+      senderName: emergencyContacts[0]?.name || "李其睿",
+      senderAvatar: emergencyContacts[0]?.avatar || "/avatar/1.png",
+      message: "大家都還好嗎？剛才地震很大",
+      timestamp: "10:23",
+    },
+    {
+      id: 2,
+      senderId: "me",
+      senderName: currentUser?.name || "我",
+      senderAvatar: currentUser?.avatar || "/avatar/user.png",
+      message: "我這邊還好，有點晃但沒事",
+      timestamp: "10:24",
+    },
+    {
+      id: 3,
+      senderId: 2,
+      senderName: emergencyContacts[1]?.name || "董教授",
+      senderAvatar: emergencyContacts[1]?.avatar || "/avatar/2.png",
+      message: "我在家裡，東西掉了一些，人沒事",
+      timestamp: "10:25",
+    },
+    {
+      id: 4,
+      senderId: 3,
+      senderName: emergencyContacts[2]?.name || "優路扣特",
+      senderAvatar: emergencyContacts[2]?.avatar || "/avatar/3.png",
+      message: "剛從辦公室跑出來，有點嚇到",
+      timestamp: "10:26",
+    },
+    {
+      id: 5,
+      senderId: 4,
+      senderName: emergencyContacts[3]?.name || "薩摩耶",
+      senderAvatar: emergencyContacts[3]?.avatar || "/avatar/4.png",
+      message: "家裡的書櫃倒了，正在整理",
+      timestamp: "10:27",
+    },
+  ]);
   const [inputMessage, setInputMessage] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    // Prefill chat history
-    const initialMessages: ChatMessage[] = [
-      {
-        id: 1,
-        senderId: 1,
-        senderName: emergencyContacts[0]?.name || "李其睿",
-        senderAvatar: emergencyContacts[0]?.avatar || "/avatar/1.png",
-        message: "大家都還好嗎？剛才地震很大",
-        timestamp: "10:23",
-      },
-      {
-        id: 2,
-        senderId: "me",
-        senderName: currentUser?.name || "我",
-        senderAvatar: currentUser?.avatar || "/avatar/user.png",
-        message: "我這邊還好，有點晃但沒事",
-        timestamp: "10:24",
-      },
-      {
-        id: 3,
-        senderId: 2,
-        senderName: emergencyContacts[1]?.name || "董教授",
-        senderAvatar: emergencyContacts[1]?.avatar || "/avatar/2.png",
-        message: "我在家裡，東西掉了一些，人沒事",
-        timestamp: "10:25",
-      },
-      {
-        id: 4,
-        senderId: 3,
-        senderName: emergencyContacts[2]?.name || "優路扣特",
-        senderAvatar: emergencyContacts[2]?.avatar || "/avatar/3.png",
-        message: "剛從辦公室跑出來，有點嚇到",
-        timestamp: "10:26",
-      },
-      {
-        id: 5,
-        senderId: 4,
-        senderName: emergencyContacts[3]?.name || "薩摩耶",
-        senderAvatar: emergencyContacts[3]?.avatar || "/avatar/4.png",
-        message: "家裡的書櫃倒了，正在整理",
-        timestamp: "10:27",
-      },
-    ];
-    setMessages(initialMessages);
-  }, [emergencyContacts, currentUser]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });

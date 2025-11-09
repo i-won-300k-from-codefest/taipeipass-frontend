@@ -14,7 +14,21 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Search, MapPin, Users, Building2 } from "lucide-react";
 import { useFamily } from "@/contexts/FamilyContext";
-import { ScrollArea } from "@/components/ui/scroll-area";
+
+
+interface GeoJSONFeature {
+  type: "Feature";
+  properties: {
+    類別: string;
+    地址: string;
+    村里別?: string;
+    可容納人數?: string;
+  };
+  geometry: {
+    type: "Point";
+    coordinates: [number, number];
+  };
+}
 
 interface ShelterData {
   類別: string;
@@ -66,7 +80,7 @@ export function ShelterSelectionDialog({
         const allShelters = [
           ...newTaipeiData.features,
           ...taipeiData.features,
-        ].map((feature: any) => ({
+        ].map((feature: GeoJSONFeature) => ({
           類別: feature.properties.類別,
           地址: feature.properties.地址,
           村里別: feature.properties.村里別,

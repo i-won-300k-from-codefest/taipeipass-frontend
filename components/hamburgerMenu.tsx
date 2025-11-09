@@ -16,7 +16,6 @@ import {
 import { UserStatusDialog, type UserData } from "@/components/UserStatusDialog";
 import {
   StatusReportDialog,
-  type EmergencyContact,
 } from "@/components/StatusReportDialog";
 import { NewsDialog, type NewsItem } from "@/components/NewsDialog";
 import { useFamily } from "@/contexts/FamilyContext";
