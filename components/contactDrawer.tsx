@@ -34,6 +34,7 @@ export default function ContactDrawer() {
   const contacts = familyData.members;
   const displayedAvatars = contacts.slice(0, 4);
   const [userData, setUserData] = useState<UserData | null>(null);
+  const [isStatusReportOpen, setIsStatusReportOpen] = useState(false);
 
   useEffect(() => {
     fetch("/current-user.json")
@@ -144,8 +145,8 @@ export default function ContactDrawer() {
         <DrawerFooter>
           <AddMemberDrawer />
           <StatusReportDialog
-            isOpen={false}
-            onOpenChange={() => {}}
+            isOpen={isStatusReportOpen}
+            onOpenChange={setIsStatusReportOpen}
             emergencyContacts={familyData.members}
             currentUser={userData}
           />

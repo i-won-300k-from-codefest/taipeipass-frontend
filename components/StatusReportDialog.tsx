@@ -139,8 +139,8 @@ export function StatusReportDialog({
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>
-        <Button variant="outline" className="w-full justify-start h-12">
-          <AlertCircle className="h-5 w-5 mr-3" />
+        <Button variant="outline" className="w-full h-12">
+          <AlertCircle className="h-5 w-5 mr-2" />
           <span className="text-base">狀態回報</span>
         </Button>
       </DialogTrigger>

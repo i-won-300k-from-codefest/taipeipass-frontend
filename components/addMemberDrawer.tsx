@@ -72,7 +72,7 @@ export default function AddMemberDrawer() {
   return (
     <Drawer open={isOpen} onOpenChange={setIsOpen}>
       <DrawerTrigger asChild>
-        <Button className="cursor-pointer">新增成員</Button>
+        <Button className="cursor-pointer h-12">新增成員</Button>
       </DrawerTrigger>
       <DrawerContent>
         <DrawerHeader>
