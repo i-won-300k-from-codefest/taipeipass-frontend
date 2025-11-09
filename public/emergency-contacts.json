@@ -1,36 +1,36 @@
 {
-  "contacts": [
-    {
-      "id": 1,
-      "name": "李其睿",
-      "avatar": "/avatar/1.png",
-      "phone": "0912-345-678",
-      "relation": "會開瓶蓋的哥哥",
-      "coordinates": [121.46941, 25.050535]
-    },
-    {
-      "id": 2,
-      "name": "董教授",
-      "avatar": "/avatar/2.png",
-      "phone": "0923-456-789",
-      "relation": "母親",
-      "coordinates": [121.47123, 25.052341]
-    },
-    {
-      "id": 3,
-      "name": "優路扣特",
-      "avatar": "/avatar/3.png",
-      "phone": "0934-567-890",
-      "relation": "朋友",
-      "coordinates": [121.46829, 25.013324]
-    },
-    {
-      "id": 4,
-      "name": "薩摩耶",
-      "avatar": "/avatar/4.png",
-      "phone": "0945-678-901",
-      "relation": "姊姊",
-      "coordinates": [121.4325, 25.0371]
-    }
-  ]
+    "contacts": [
+        {
+            "id": 1,
+            "name": "李其睿",
+            "avatar": "/avatar/1.png",
+            "phone": "0912-345-678",
+            "relation": "會開瓶蓋的哥哥",
+            "coordinates": [121.46941, 25.050535]
+        },
+        {
+            "id": 2,
+            "name": "董教授",
+            "avatar": "/avatar/2.png",
+            "phone": "0923-456-789",
+            "relation": "母親",
+            "coordinates": [121.47123, 25.052341]
+        },
+        {
+            "id": 3,
+            "name": "優路扣特",
+            "avatar": "/avatar/3.png",
+            "phone": "0934-567-890",
+            "relation": "朋友",
+            "coordinates": [121.46829, 25.013324]
+        },
+        {
+            "id": 4,
+            "name": "薩摩耶",
+            "avatar": "/avatar/4.png",
+            "phone": "0945-678-901",
+            "relation": "姊姊",
+            "coordinates": [121.4325, 25.0371]
+        }
+    ]
 }

@@ -1,11 +1,11 @@
 {
-  "name": "沃夫元",
-  "avatar": "/avatar/user.png",
-  "email": "wolf.yuan@example.com",
-  "phone": "+886 912 345 678",
-  "address": "台北市信義區市府路1號",
-  "emergencyContact": {
-    "name": "緊急聯絡人",
-    "phone": "+886 912 987 654"
-  }
+    "name": "沃夫元",
+    "avatar": "/avatar/user.png",
+    "email": "wolf.yuan@example.com",
+    "phone": "+886 912 345 678",
+    "address": "台北市信義區市府路1號",
+    "emergencyContact": {
+        "name": "緊急聯絡人",
+        "phone": "+886 912 987 654"
+    }
 }
