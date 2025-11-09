@@ -74,7 +74,7 @@ function HomeContent() {
             />
 
             {/* Navigate to Common Shelter Button */}
-            <div className="absolute right-8 bottom-24 z-10">
+            <div className="absolute right-8 bottom-28 z-10">
                 <Button
                     size="icon"
                     variant="outline"
@@ -86,7 +86,7 @@ function HomeContent() {
                 </Button>
             </div>
 
-            <div className="absolute bottom-4 left-0 w-screen">
+            <div className="absolute bottom-10 left-0 w-screen">
                 <div className="w-full px-8">
                     <ContactDrawer />
                 </div>
