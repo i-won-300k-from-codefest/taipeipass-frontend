@@ -58,15 +58,15 @@ export function NewsBanner({ news }: NewsBannerProps) {
 
     const variants = {
         enter: (direction: number) => ({
-            x: direction > 0 ? 300 : -300,
+            y: direction > 0 ? 300 : -300,
             opacity: 0
         }),
         center: {
-            x: 0,
+            y: 0,
             opacity: 1
         },
         exit: (direction: number) => ({
-            x: direction < 0 ? 300 : -300,
+            y: direction < 0 ? 300 : -300,
             opacity: 0
         })
     };
@@ -129,8 +129,6 @@ export function NewsBanner({ news }: NewsBannerProps) {
                                 {currentNews.content}
                             </p>
                         </div>
-
-
                     </motion.div>
                 </AnimatePresence>
             </div>
